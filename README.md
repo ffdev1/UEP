@@ -1,4 +1,4 @@
-# EOP (Prototype)
+# UEP (Prototype)
 
 ## 📌 Description
 Concept of a unified educational platform interface.
