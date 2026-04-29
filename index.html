@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ЕОП — Единая образовательная платформа</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ========================================
+     ЭКРАН 1: WELCOME
+     ======================================== -->
+<div id="screen-welcome" class="screen welcome-screen active">
+  <div class="welcome-container">
+    <div class="welcome-logo">
+      <img src="assets/logo.png" alt="ЕОП" style="width: 120px; height: 120px;">
+    </div>
+    <div class="welcome-content">
+      <h1 class="welcome-title">Добро пожаловать в ЕОП</h1>
+      <p class="welcome-subtitle">Единая образовательная платформа Сахалинской области</p>
+      <p class="welcome-desc">Здесь все в одном месте: документы, расписание, дневник и новости от ваших учреждений</p>
+      <div style="display: flex; gap: 12px; flex-direction: column;">
+        <button id="welcome-start-btn" class="btn btn-primary btn-lg">Регистрация →</button>
+        <button id="welcome-login-btn" class="btn btn-outline btn-lg">Войти в аккаунт</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========================================
+     ЭКРАН 2: РЕГИСТРАЦИЯ - ШАГ 1
+     ======================================== -->
+<div id="screen-register" class="screen app-layout">
+  <main class="app-content" style="max-width: 600px; margin: 0 auto; padding: 40px 20px;">
+    <div class="page-header" style="text-align: center;">
+      <div class="page-title">Регистрация</div>
+    </div>
+
+    <div class="card">
+      <div class="form-group">
+        <label>Фамилия *</label>
+        <input type="text" id="reg-surname" placeholder="Иванов">
+      </div>
+      <div class="form-group">
+        <label>Имя *</label>
+        <input type="text" id="reg-name" placeholder="Иван">
+      </div>
+      <div class="form-group">
+        <label>Отчество</label>
+        <input type="text" id="reg-patronymic" placeholder="Иванович">
+      </div>
+      <div class="form-group">
+        <label>Дата рождения *</label>
+        <input type="date" id="reg-birthdate">
+      </div>
+      <div class="form-group">
+        <label>СНИЛС *</label>
+        <input type="text" id="reg-snils" placeholder="123-456-789-00">
+      </div>
+      <div class="form-group">
+        <label>Паспорт</label>
+        <input type="text" id="reg-passport" placeholder="1234 567890">
+      </div>
+      <form>
+  <label>
+    <input type="checkbox" required>
+    Я даю согласие на обработку персональных данных и принимаю
+    <a href="consent.html" target="_blank">условия</a>
+  </label>
+</form>
+      <div style="display: flex; gap: 12px; margin-top: 20px;">
+        <button id="reg-step1-back" class="btn btn-outline" style="flex: 1;">← Назад</button>
+        <button id="reg-step1-next" class="btn btn-primary" style="flex: 1;">Далее →</button>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- ========================================
+     ЭКРАН 3: РЕГИСТРАЦИЯ - ШАГ 2 (Выбор учреждений)
+     ======================================== -->
+<div id="screen-register-institutions" class="screen app-layout">
+  <main class="app-content" style="max-width: 600px; margin: 0 auto; padding: 40px 20px;">
+    <div class="page-header" style="text-align: center;">
+      <div class="page-title">Выбор учреждений</div>
+    </div>
+
+    <div class="card">
+      <div style="display: grid; gap: 12px; margin-bottom: 20px;">
+        <button id="add-school-btn" class="btn btn-outline" style="padding: 20px; text-align: left;">
+          <div style="font-size: 24px; margin-bottom: 8px;"><i class="fas fa-school"></i></div>
+          <div style="font-weight: 600;">Школа</div>
+          <div style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">Общеобразовательное учреждение</div>
+        </button>
+        <button id="add-univ-btn" class="btn btn-outline" style="padding: 20px; text-align: left;">
+          <div style="font-size: 24px; margin-bottom: 8px;"><i class="fas fa-university"></i></div>
+          <div style="font-weight: 600;">ВУЗ</div>
+          <div style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">Высшее учебное заведение</div>
+        </button>
+        <button id="add-do-btn" class="btn btn-outline" style="padding: 20px; text-align: left;">
+          <div style="font-size: 24px; margin-bottom: 8px;"><i class="fas fa-music"></i></div>
+          <div style="font-weight: 600;">Дополнительное образование</div>
+          <div style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">Кружки, секции, школы искусств</div>
+        </button>
+      </div>
+      
+      <div id="selected-institutions-list" style="margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border-color);"></div>
+      
+      <div style="display: flex; gap: 12px; margin-top: 20px;">
+        <button id="reg-inst-back" class="btn btn-outline" style="flex: 1;">← Назад</button>
+        <button id="reg-inst-next" class="btn btn-primary" style="flex: 1;">Далее →</button>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- Подэкраны регистрации -->
+<div id="screen-register-school" class="screen app-layout">
+  <main class="app-content" style="max-width: 600px; margin: 0 auto; padding: 40px 20px;">
+    <div class="page-header" style="text-align: center;">
+      <div class="page-title">Выбор школы</div>
+    </div>
+    <div class="card">
+      <div class="form-group">
+        <label>Школа</label>
+        <select>
+          <option>МБОУ «Школа №1 г. Южно-Сахалинска»</option>
+          <option>МБОУ «Гимназия №3»</option>
+          <option>Лицей №2 г. Южно-Сахалинска</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Класс</label>
+        <input type="text" placeholder="10 «А»">
+      </div>
+      <div style="display: flex; gap: 12px; margin-top: 20px;">
+        <button class="btn btn-outline reg-back-btn" style="flex: 1;">← Назад</button>
+        <button class="btn btn-primary reg-complete-btn" style="flex: 1;">Готово</button>
+      </div>
+    </div>
+  </main>
+</div>
+
+<div id="screen-register-univ" class="screen app-layout">
+  <main class="app-content" style="max-width: 600px; margin: 0 auto; padding: 40px 20px;">
+    <div class="page-header" style="text-align: center;">
+      <div class="page-title">Выбор ВУЗа</div>
+    </div>
+    <div class="card">
+      <div class="form-group">
+        <label>ВУЗ</label>
+        <select>
+          <option>Сахалинский государственный университет</option>
+          <option>Сахалинский техникум</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Специальность</label>
+        <input type="text" placeholder="Информатика и вычислительная техника">
+      </div>
+      <div style="display: flex; gap: 12px; margin-top: 20px;">
+        <button class="btn btn-outline reg-back-btn" style="flex: 1;">← Назад</button>
+        <button class="btn btn-primary reg-complete-btn" style="flex: 1;">Готово</button>
+      </div>
+    </div>
+  </main>
+</div>
+
+<div id="screen-register-do" class="screen app-layout">
+  <main class="app-content" style="max-width: 600px; margin: 0 auto; padding: 40px 20px;">
+    <div class="page-header" style="text-align: center;">
+      <div class="page-title">Дополнительное образование</div>
+    </div>
+    <div class="card">
+      <div class="form-group">
+        <label>Организация</label>
+        <select>
+          <option>Детская музыкальная школа №3</option>
+          <option>Детская художественная школа</option>
+          <option>Спортивная школа «Олимп»</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Направление</label>
+        <input type="text" placeholder="Музыка, рисование, спорт">
+      </div>
+      <div style="display: flex; gap: 12px; margin-top: 20px;">
+        <button class="btn btn-outline reg-back-btn" style="flex: 1;">← Назад</button>
+        <button class="btn btn-primary reg-complete-btn" style="flex: 1;">Готово</button>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- ========================================
+     ЭКРАН 4: DASHBOARD
+     ======================================== -->
+<div id="screen-dashboard" class="screen app-layout">
+  <header class="app-header">
+    <div class="header-logo">
+      <img src="assets/logo.png" alt="ЕОП" style="width: 40px; height: 40px; margin-right: 12px;">
+      <div>
+        <div class="logo-text">ЕОП</div>
+        <div class="logo-full">Единая образовательная платформа</div>
+      </div>
+    </div>
+    <nav class="app-nav">
+      <button class="nav-item active" data-screen="dashboard">
+        <i class="fas fa-home nav-icon"></i> Главная
+      </button>
+      <button class="nav-item" data-screen="learning">
+        <i class="fas fa-graduation-cap nav-icon"></i> Обучение
+      </button>
+      <button class="nav-item nav-item-path" data-screen="path">
+        <img src="assets/samurai.png" class="nav-samurai-icon" alt="Путь"> Путь
+      </button>
+      <button class="nav-item" data-screen="documents">
+        <i class="fas fa-file-alt nav-icon"></i> Документы
+      </button>
+      <button class="nav-item" data-screen="schedule">
+        <i class="fas fa-calendar-alt nav-icon"></i> Расписание
+      </button>
+      <button class="nav-item" data-screen="diary">
+        <i class="fas fa-book-open nav-icon"></i> Дневник
+      </button>
+      <button class="nav-item" data-screen="news">
+        <i class="fas fa-newspaper nav-icon"></i> Новости
+      </button>
+      <button class="nav-item" data-screen="organizations">
+        <i class="fas fa-building nav-icon"></i> Организации
+      </button>
+    </nav>
+    <div class="header-user" style="cursor: pointer;">
+      <div class="user-avatar">ИИ</div>
+      <div class="user-info">
+        <div class="user-name">Иван Иванов</div>
+        <div class="user-role">Ученик</div>
+      </div>
+    </div>
+  </header>
+
+  <main class="app-content">
+    <div class="page-header">
+      <div class="page-title">Добро пожаловать!</div>
+      <div class="page-subtitle">Ваша личная образовательная платформа</div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; margin-bottom: 32px;">
+      <div class="card cta-card">
+        <div class="cta-text">
+          <div class="cta-title"><i class="fas fa-graduation-cap"></i> Обучение</div>
+          <div class="cta-desc">Задания, уроки и домашняя работа по предметам</div>
+        </div>
+        <button class="btn btn-primary btn-sm" onclick="showScreen('learning')">Перейти →</button>
+      </div>
+
+      <div class="card cta-card" style="border-left: 3px solid #7C3AED;">
+        <div class="cta-text">
+          <div class="cta-title" style="color: #7C3AED;"><img src="assets/samurai.png" style="width:18px;height:18px;vertical-align:middle;margin-right:6px;" alt="">Мой путь</div>
+          <div class="cta-desc">Ваша индивидуальная образовательная траектория</div>
+        </div>
+        <button class="btn btn-sm" style="background:#7C3AED;color:white;" onclick="showScreen('path')">Перейти →</button>
+      </div>
+
+      <div class="card cta-card">
+        <div class="cta-text">
+          <div class="cta-title"><i class="fas fa-file-alt"></i> Мои документы</div>
+          <div class="cta-desc">Запросите справку об обучении в два клика</div>
+        </div>
+        <button class="btn btn-primary btn-sm" onclick="showScreen('documents')">Перейти →</button>
+      </div>
+
+      <div class="card cta-card">
+        <div class="cta-text">
+          <div class="cta-title"><i class="fas fa-calendar-alt"></i> Расписание</div>
+          <div class="cta-desc">Смотрите расписание всех ваших занятий</div>
+        </div>
+        <button class="btn btn-primary btn-sm" onclick="showScreen('schedule')">Перейти →</button>
+      </div>
+
+      <div class="card cta-card">
+        <div class="cta-text">
+          <div class="cta-title"><i class="fas fa-book-open"></i> Дневник</div>
+          <div class="cta-desc">Оценки и домашние задания</div>
+        </div>
+        <button class="btn btn-primary btn-sm" onclick="showScreen('diary')">Перейти →</button>
+      </div>
+    </div>
+
+    <div class="card" style="border-left: 4px solid var(--primary);">
+      <div class="card-title" style="margin-bottom: 12px;">⚡ Как работает ЕОП</div>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
+        <div style="display:flex; gap:10px; align-items:flex-start;">
+          <div style="font-size:24px; flex-shrink:0;">📋</div>
+          <div>
+            <div style="font-size:13px; font-weight:600; color:var(--text-primary);">Запрос</div>
+            <div style="font-size:12px; color:var(--text-secondary);">Запросите справку одной кнопкой</div>
+          </div>
+        </div>
+        <div style="display:flex; gap:10px; align-items:flex-start;">
+          <div style="font-size:24px; flex-shrink:0;">⚙️</div>
+          <div>
+            <div style="font-size:13px; font-weight:600; color:var(--text-primary);">Обработка</div>
+            <div style="font-size:12px; color:var(--text-secondary);">Система автоматически формирует документ</div>
+          </div>
+        </div>
+        <div style="display:flex; gap:10px; align-items:flex-start;">
+          <div style="font-size:24px; flex-shrink:0;">✅</div>
+          <div>
+            <div style="font-size:13px; font-weight:600; color:var(--text-primary);">Готово</div>
+            <div style="font-size:12px; color:var(--text-secondary);">Документ готов к отправке</div>
+          </div>
+        </div>
+        <div style="display:flex; gap:10px; align-items:flex-start;">
+          <div style="font-size:24px; flex-shrink:0;">📤</div>
+          <div>
+            <div style="font-size:13px; font-weight:600; color:var(--text-primary);">Отправка</div>
+            <div style="font-size:12px; color:var(--text-secondary);">Отправьте в организацию без бумаг</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- ========================================
+     ЭКРАН 5: ПРОФИЛЬ
+     ======================================== -->
+<div id="screen-profile" class="screen app-layout">
+  <header class="app-header">
+    <div class="header-logo">
+      <img src="assets/logo.png" alt="ЕОП" style="width: 40px; height: 40px; margin-right: 12px;">
+      <div>
+        <div class="logo-text">ЕОП</div>
+        <div class="logo-full">Единая образовательная платформа</div>
+      </div>
+    </div>
+    <nav class="app-nav">
+      <button class="nav-item" data-screen="dashboard"><i class="fas fa-home nav-icon"></i> Главная</button>
+      <button class="nav-item" data-screen="learning"><i class="fas fa-graduation-cap nav-icon"></i> Обучение</button>
+      <button class="nav-item nav-item-path" data-screen="path"><img src="assets/samurai.png" class="nav-samurai-icon" alt="Путь"> Путь</button>
+      <button class="nav-item" data-screen="documents"><i class="fas fa-file-alt nav-icon"></i> Документы</button>
+      <button class="nav-item" data-screen="schedule"><i class="fas fa-calendar-alt nav-icon"></i> Расписание</button>
+      <button class="nav-item" data-screen="diary"><i class="fas fa-book-open nav-icon"></i> Дневник</button>
+      <button class="nav-item" data-screen="news"><i class="fas fa-newspaper nav-icon"></i> Новости</button>
+      <button class="nav-item" data-screen="organizations"><i class="fas fa-building nav-icon"></i> Организации</button>
+    </nav>
+    <div class="header-user" style="cursor: pointer;">
+      <div class="user-avatar">ИИ</div>
+      <div class="user-info">
+        <div class="user-name">Иван Иванов</div>
+        <div class="user-role">Ученик</div>
+      </div>
+    </div>
+  </header>
+
+  <main class="app-content">
+    <div class="breadcrumb">
+      <a onclick="showScreen('dashboard')">Главная</a>
+      <span class="breadcrumb-sep">/</span>
+      <span>Профиль</span>
+    </div>
+
+    <div class="page-header">
+      <div class="page-title">Мой профиль</div>
+      <div class="page-subtitle">Информация о вашем аккаунте</div>
+    </div>
+
+    <div id="profile-content"></div>
+  </main>
+</div>
+
+<!-- ========================================
+     ЭКРАН 6: DOCUMENTS
+     ======================================== -->
+<div id="screen-documents" class="screen app-layout">
+  <header class="app-header">
+    <div class="header-logo">
+      <img src="assets/logo.png" alt="ЕОП" style="width: 40px; height: 40px; margin-right: 12px;">
+      <div>
+        <div class="logo-text">ЕОП</div>
+        <div class="logo-full">Единая образовательная платформа</div>
+      </div>
+    </div>
+    <nav class="app-nav">
+      <button class="nav-item" data-screen="dashboard"><i class="fas fa-home nav-icon"></i> Главная</button>
+      <button class="nav-item" data-screen="learning"><i class="fas fa-graduation-cap nav-icon"></i> Обучение</button>
+      <button class="nav-item nav-item-path" data-screen="path"><img src="assets/samurai.png" class="nav-samurai-icon" alt="Путь"> Путь</button>
+      <button class="nav-item active" data-screen="documents"><i class="fas fa-file-alt nav-icon"></i> Документы</button>
+      <button class="nav-item" data-screen="schedule"><i class="fas fa-calendar-alt nav-icon"></i> Расписание</button>
+      <button class="nav-item" data-screen="diary"><i class="fas fa-book-open nav-icon"></i> Дневник</button>
+      <button class="nav-item" data-screen="news"><i class="fas fa-newspaper nav-icon"></i> Новости</button>
+      <button class="nav-item" data-screen="organizations"><i class="fas fa-building nav-icon"></i> Организации</button>
+    </nav>
+    <div class="header-user" style="cursor: pointer;">
+      <div class="user-avatar">ИИ</div>
+      <div class="user-info">
+        <div class="user-name">Иван Иванов</div>
+        <div class="user-role">Ученик</div>
+      </div>
+    </div>
+  </header>
+
+  <main class="app-content">
+    <div class="breadcrumb">
+      <a onclick="showScreen('dashboard')">Главная</a>
+      <span class="breadcrumb-sep">/</span>
+      <span>Документы</span>
+    </div>
+
+    <div class="page-header">
+      <div class="page-title">Мои документы</div>
+      <div class="page-subtitle">Все ваши справки и документы в одном месте</div>
+    </div>
+
+    <div class="docs-toolbar">
+      <div class="docs-filter">
+        <button class="filter-btn active" data-filter="all">Все</button>
+        <button class="filter-btn" data-filter="ready">Готовые</button>
+        <button class="filter-btn" data-filter="sent">Отправленные</button>
+      </div>
+      <button id="request-doc-btn" class="btn btn-primary">
+        <i class="fas fa-plus"></i> Запросить справку
+      </button>
+    </div>
+
+    <div id="doc-list" class="doc-list"></div>
+  </main>
+</div>
+
+<!-- ========================================
+     ЭКРАН 7: SCHEDULE
+     ======================================== -->
+<div id="screen-schedule" class="screen app-layout">
+  <header class="app-header">
+    <div class="header-logo">
+      <img src="assets/logo.png" alt="ЕОП" style="width: 40px; height: 40px; margin-right: 12px;">
+      <div>
+        <div class="logo-text">ЕОП</div>
+        <div class="logo-full">Единая образовательная платформа</div>
+      </div>
+    </div>
+    <nav class="app-nav">
+      <button class="nav-item" data-screen="dashboard"><i class="fas fa-home nav-icon"></i> Главная</button>
+      <button class="nav-item" data-screen="learning"><i class="fas fa-graduation-cap nav-icon"></i> Обучение</button>
+      <button class="nav-item nav-item-path" data-screen="path"><img src="assets/samurai.png" class="nav-samurai-icon" alt="Путь"> Путь</button>
+      <button class="nav-item" data-screen="documents"><i class="fas fa-file-alt nav-icon"></i> Документы</button>
+      <button class="nav-item active" data-screen="schedule"><i class="fas fa-calendar-alt nav-icon"></i> Расписание</button>
+      <button class="nav-item" data-screen="diary"><i class="fas fa-book-open nav-icon"></i> Дневник</button>
+      <button class="nav-item" data-screen="news"><i class="fas fa-newspaper nav-icon"></i> Новости</button>
+      <button class="nav-item" data-screen="organizations"><i class="fas fa-building nav-icon"></i> Организации</button>
+    </nav>
+    <div class="header-user" style="cursor: pointer;">
+      <div class="user-avatar">ИИ</div>
+      <div class="user-info">
+        <div class="user-name">Иван Иванов</div>
+        <div class="user-role">Ученик</div>
+      </div>
+    </div>
+  </header>
+
+  <main class="app-content">
+    <div class="breadcrumb">
+      <a onclick="showScreen('dashboard')">Главная</a>
+      <span class="breadcrumb-sep">/</span>
+      <span>Расписание</span>
+    </div>
+
+    <div class="page-header">
+      <div class="page-title">Мое расписание</div>
+      <div class="page-subtitle">Объединенное расписание занятий из всех ваших учреждений</div>
+    </div>
+
+    <div class="card" style="margin-bottom: 20px;">
+      <div class="docs-filter" style="margin-bottom: 0;">
+        <button class="filter-btn active" data-day="mon">Пн</button>
+        <button class="filter-btn" data-day="tue">Вт</button>
+        <button class="filter-btn" data-day="wed">Ср</button>
+        <button class="filter-btn" data-day="thu">Чт</button>
+        <button class="filter-btn" data-day="fri">Пт</button>
+        <button class="filter-btn" data-day="sat">Сб</button>
+        <button class="filter-btn" data-day="sun">Вс</button>
+      </div>
+    </div>
+
+    <div id="schedule-list" class="doc-list"></div>
+  </main>
+</div>
+
+<!-- ========================================
+     ЭКРАН 8: DIARY
+     ======================================== -->
+<div id="screen-diary" class="screen app-layout">
+  <header class="app-header">
+    <div class="header-logo">
+      <img src="assets/logo.png" alt="ЕОП" style="width: 40px; height: 40px; margin-right: 12px;">
+      <div>
+        <div class="logo-text">ЕОП</div>
+        <div class="logo-full">Единая образовательная платформа</div>
+      </div>
+    </div>
+    <nav class="app-nav">
+      <button class="nav-item" data-screen="dashboard"><i class="fas fa-home nav-icon"></i> Главная</button>
+      <button class="nav-item" data-screen="learning"><i class="fas fa-graduation-cap nav-icon"></i> Обучение</button>
+      <button class="nav-item nav-item-path" data-screen="path"><img src="assets/samurai.png" class="nav-samurai-icon" alt="Путь"> Путь</button>
+      <button class="nav-item" data-screen="documents"><i class="fas fa-file-alt nav-icon"></i> Документы</button>
+      <button class="nav-item" data-screen="schedule"><i class="fas fa-calendar-alt nav-icon"></i> Расписание</button>
+      <button class="nav-item active" data-screen="diary"><i class="fas fa-book-open nav-icon"></i> Дневник</button>
+      <button class="nav-item" data-screen="news"><i class="fas fa-newspaper nav-icon"></i> Новости</button>
+      <button class="nav-item" data-screen="organizations"><i class="fas fa-building nav-icon"></i> Организации</button>
+    </nav>
+    <div class="header-user" style="cursor: pointer;">
+      <div class="user-avatar">ИИ</div>
+      <div class="user-info">
+        <div class="user-name">Иван Иванов</div>
+        <div class="user-role">Ученик</div>
+      </div>
+    </div>
+  </header>
+
+  <main class="app-content">
+    <div class="breadcrumb">
+      <a onclick="showScreen('dashboard')">Главная</a>
+      <span class="breadcrumb-sep">/</span>
+      <span>Дневник</span>
+    </div>
+
+    <div class="page-header">
+      <div class="page-title">Мой дневник</div>
+      <div class="page-subtitle">Оценки и домашние задания</div>
+    </div>
+
+    <div id="diary-list" class="doc-list"></div>
+  </main>
+</div>
+
+<!-- ========================================
+     ЭКРАН 9: NEWS
+     ======================================== -->
+<div id="screen-news" class="screen app-layout">
+  <header class="app-header">
+    <div class="header-logo">
+      <img src="assets/logo.png" alt="ЕОП" style="width: 40px; height: 40px; margin-right: 12px;">
+      <div>
+        <div class="logo-text">ЕОП</div>
+        <div class="logo-full">Единая образовательная платформа</div>
+      </div>
+    </div>
+    <nav class="app-nav">
+      <button class="nav-item" data-screen="dashboard"><i class="fas fa-home nav-icon"></i> Главная</button>
+      <button class="nav-item" data-screen="learning"><i class="fas fa-graduation-cap nav-icon"></i> Обучение</button>
+      <button class="nav-item nav-item-path" data-screen="path"><img src="assets/samurai.png" class="nav-samurai-icon" alt="Путь"> Путь</button>
+      <button class="nav-item" data-screen="documents"><i class="fas fa-file-alt nav-icon"></i> Документы</button>
+      <button class="nav-item" data-screen="schedule"><i class="fas fa-calendar-alt nav-icon"></i> Расписание</button>
+      <button class="nav-item" data-screen="diary"><i class="fas fa-book-open nav-icon"></i> Дневник</button>
+      <button class="nav-item active" data-screen="news"><i class="fas fa-newspaper nav-icon"></i> Новости</button>
+      <button class="nav-item" data-screen="organizations"><i class="fas fa-building nav-icon"></i> Организации</button>
+    </nav>
+    <div class="header-user" style="cursor: pointer;">
+      <div class="user-avatar">ИИ</div>
+      <div class="user-info">
+        <div class="user-name">Иван Иванов</div>
+        <div class="user-role">Ученик</div>
+      </div>
+    </div>
+  </header>
+
+  <main class="app-content">
+    <div class="breadcrumb">
+      <a onclick="showScreen('dashboard')">Главная</a>
+      <span class="breadcrumb-sep">/</span>
+      <span>Новости</span>
+    </div>
+
+    <div class="page-header">
+      <div class="page-title">Новости моих учреждений</div>
+      <div class="page-subtitle">Актуальные объявления и события от ваших образовательных организаций</div>
+    </div>
+
+    <div class="docs-toolbar">
+      <div class="docs-filter" style="margin-bottom: 0;">
+        <button class="filter-btn active" data-filter="all">Все</button>
+        <button class="filter-btn" data-filter="МБОУ «Школа №1»">Школа №1</button>
+        <button class="filter-btn" data-filter="Детская музыкальная школа №3">Музыкальная школа</button>
+        <button class="filter-btn" data-filter="Спортивная школа «Олимп»">Спортивная школа</button>
+        <button class="filter-btn" data-filter="Детская художественная школа">Художественная школа</button>
+      </div>
+    </div>
+
+    <div id="news-list" class="doc-list" style="margin-top: 20px;"></div>
+  </main>
+</div>
+
+<!-- ========================================
+     ЭКРАН 10: ORGANIZATIONS
+     ======================================== -->
+<div id="screen-organizations" class="screen app-layout">
+  <header class="app-header">
+    <div class="header-logo">
+      <img src="assets/logo.png" alt="ЕОП" style="width: 40px; height: 40px; margin-right: 12px;">
+      <div>
+        <div class="logo-text">ЕОП</div>
+        <div class="logo-full">Единая образовательная платформа</div>
+      </div>
+    </div>
+    <nav class="app-nav">
+      <button class="nav-item" data-screen="dashboard"><i class="fas fa-home nav-icon"></i> Главная</button>
+      <button class="nav-item" data-screen="learning"><i class="fas fa-graduation-cap nav-icon"></i> Обучение</button>
+      <button class="nav-item nav-item-path" data-screen="path"><img src="assets/samurai.png" class="nav-samurai-icon" alt="Путь"> Путь</button>
+      <button class="nav-item" data-screen="documents"><i class="fas fa-file-alt nav-icon"></i> Документы</button>
+      <button class="nav-item" data-screen="schedule"><i class="fas fa-calendar-alt nav-icon"></i> Расписание</button>
+      <button class="nav-item" data-screen="diary"><i class="fas fa-book-open nav-icon"></i> Дневник</button>
+      <button class="nav-item" data-screen="news"><i class="fas fa-newspaper nav-icon"></i> Новости</button>
+      <button class="nav-item active" data-screen="organizations"><i class="fas fa-building nav-icon"></i> Организации</button>
+    </nav>
+    <div class="header-user" style="cursor: pointer;">
+      <div class="user-avatar">ИИ</div>
+      <div class="user-info">
+        <div class="user-name">Иван Иванов</div>
+        <div class="user-role">Ученик</div>
+      </div>
+    </div>
+  </header>
+
+  <main class="app-content">
+    <div class="breadcrumb">
+      <a onclick="showScreen('dashboard')">Главная</a>
+      <span class="breadcrumb-sep">/</span>
+      <span>Организации</span>
+    </div>
+
+    <div class="page-header">
+      <div class="page-title">Образовательные организации Сахалинской области</div>
+      <div class="page-subtitle">Полный перечень учреждений для подачи документов и ознакомления</div>
+    </div>
+
+    <div class="docs-toolbar">
+      <div class="docs-filter" style="margin-bottom: 0;">
+        <button class="filter-btn active" data-filter="all">Все</button>
+        <button class="filter-btn" data-filter="Школа">Школы</button>
+        <button class="filter-btn" data-filter="ВУЗ">ВУЗы</button>
+        <button class="filter-btn" data-filter="Дополнительное образование">Доп. образование</button>
+      </div>
+      <input type="text" placeholder="Поиск по названию..." style="width: 250px; padding: 11px 14px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-size: 14px; font-family: inherit; color: var(--text-primary); background: var(--bg-white);">
+    </div>
+
+    <div id="organizations-list" class="doc-list" style="margin-top: 20px;"></div>
+  </main>
+</div>
+
+<!-- ========================================
+     ЭКРАН 11: ОБУЧЕНИЕ
+     ======================================== -->
+<div id="screen-learning" class="screen app-layout">
+  <header class="app-header">
+    <div class="header-logo">
+      <img src="assets/logo.png" alt="ЕОП" style="width: 40px; height: 40px; margin-right: 12px;">
+      <div>
+        <div class="logo-text">ЕОП</div>
+        <div class="logo-full">Единая образовательная платформа</div>
+      </div>
+    </div>
+    <nav class="app-nav">
+      <button class="nav-item" data-screen="dashboard"><i class="fas fa-home nav-icon"></i> Главная</button>
+      <button class="nav-item active" data-screen="learning"><i class="fas fa-graduation-cap nav-icon"></i> Обучение</button>
+      <button class="nav-item nav-item-path" data-screen="path"><img src="assets/samurai.png" class="nav-samurai-icon" alt="Путь"> Путь</button>
+      <button class="nav-item" data-screen="documents"><i class="fas fa-file-alt nav-icon"></i> Документы</button>
+      <button class="nav-item" data-screen="schedule"><i class="fas fa-calendar-alt nav-icon"></i> Расписание</button>
+      <button class="nav-item" data-screen="diary"><i class="fas fa-book-open nav-icon"></i> Дневник</button>
+      <button class="nav-item" data-screen="news"><i class="fas fa-newspaper nav-icon"></i> Новости</button>
+      <button class="nav-item" data-screen="organizations"><i class="fas fa-building nav-icon"></i> Организации</button>
+    </nav>
+    <div class="header-user" style="cursor: pointer;">
+      <div class="user-avatar">ИИ</div>
+      <div class="user-info">
+        <div class="user-name">Иван Иванов</div>
+        <div class="user-role">Ученик</div>
+      </div>
+    </div>
+  </header>
+
+  <main class="app-content">
+    <div class="breadcrumb">
+      <a onclick="showScreen('dashboard')">Главная</a>
+      <span class="breadcrumb-sep">/</span>
+      <span>Мое обучение</span>
+    </div>
+
+    <div class="page-header">
+      <div class="page-title">Обучение</div>
+      <div class="page-subtitle">Задания, уроки и домашняя работа по предметам школьной программы</div>
+    </div>
+
+    <!-- Прогресс-баннер -->
+    <div class="learning-banner">
+      <div class="learning-banner-left">
+        <div class="learning-banner-title">Прогресс этой недели</div>
+        <div class="learning-banner-subtitle">Выполнено 7 из 12 заданий</div>
+        <div class="learning-progress-bar">
+          <div class="learning-progress-fill" style="width: 58%;"></div>
+        </div>
+      </div>
+      <div class="learning-banner-stats">
+        <div class="learning-stat">
+          <div class="learning-stat-value">7</div>
+          <div class="learning-stat-label">Выполнено</div>
+        </div>
+        <div class="learning-stat">
+          <div class="learning-stat-value">3</div>
+          <div class="learning-stat-label">Просрочено</div>
+        </div>
+        <div class="learning-stat">
+          <div class="learning-stat-value">4.6</div>
+          <div class="learning-stat-label">Средний балл</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Фильтры предметов -->
+    <div class="docs-toolbar" style="margin-bottom: 20px;">
+      <div class="docs-filter" id="learning-subject-filter">
+        <button class="filter-btn active" data-subject="all">Все предметы</button>
+        <button class="filter-btn" data-subject="math">Математика</button>
+        <button class="filter-btn" data-subject="russian">Русский язык</button>
+        <button class="filter-btn" data-subject="physics">Физика</button>
+        <button class="filter-btn" data-subject="history">История</button>
+        <button class="filter-btn" data-subject="english">Английский</button>
+        <button class="filter-btn" data-subject="biology">Биология</button>
+      </div>
+      <div class="docs-filter">
+        <button class="filter-btn active" data-task-type="all">Все типы</button>
+        <button class="filter-btn" data-task-type="hw">Домашнее задание</button>
+        <button class="filter-btn" data-task-type="test">Тест</button>
+        <button class="filter-btn" data-task-type="lesson">Урок</button>
+      </div>
+    </div>
+
+    <div id="learning-list" class="learning-grid"></div>
+  </main>
+</div>
+
+<!-- ========================================
+     ЭКРАН 12: ПУТЬ
+     ======================================== -->
+<div id="screen-path" class="screen app-layout">
+  <header class="app-header">
+    <div class="header-logo">
+      <img src="assets/logo.png" alt="ЕОП" style="width: 40px; height: 40px; margin-right: 12px;">
+      <div>
+        <div class="logo-text">ЕОП</div>
+        <div class="logo-full">Единая образовательная платформа</div>
+      </div>
+    </div>
+    <nav class="app-nav">
+      <button class="nav-item" data-screen="dashboard"><i class="fas fa-home nav-icon"></i> Главная</button>
+      <button class="nav-item" data-screen="learning"><i class="fas fa-graduation-cap nav-icon"></i> Обучение</button>
+      <button class="nav-item nav-item-path active" data-screen="path"><img src="assets/samurai.png" class="nav-samurai-icon" alt="Путь"> Путь</button>
+      <button class="nav-item" data-screen="documents"><i class="fas fa-file-alt nav-icon"></i> Документы</button>
+      <button class="nav-item" data-screen="schedule"><i class="fas fa-calendar-alt nav-icon"></i> Расписание</button>
+      <button class="nav-item" data-screen="diary"><i class="fas fa-book-open nav-icon"></i> Дневник</button>
+      <button class="nav-item" data-screen="news"><i class="fas fa-newspaper nav-icon"></i> Новости</button>
+      <button class="nav-item" data-screen="organizations"><i class="fas fa-building nav-icon"></i> Организации</button>
+    </nav>
+    <div class="header-user" style="cursor: pointer;">
+      <div class="user-avatar">ИИ</div>
+      <div class="user-info">
+        <div class="user-name">Иван Иванов</div>
+        <div class="user-role">Ученик</div>
+      </div>
+    </div>
+  </header>
+
+  <main class="app-content path-content">
+    <div class="breadcrumb">
+      <a onclick="showScreen('dashboard')">Главная</a>
+      <span class="breadcrumb-sep">/</span>
+      <span>Мой путь</span>
+    </div>
+
+    <div class="page-header">
+      <div style="display:flex; align-items:center; gap:14px;">
+        <img src="assets/samurai.png" style="width:44px;height:44px;" alt="Путь">
+        <div>
+          <div class="page-title" style="margin-bottom:4px;">Мой путь</div>
+          <div class="page-subtitle">Твоя индивидуальная образовательная траектория</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Совет дня -->
+    <div class="path-tip-banner" id="path-daily-tip">
+      <div class="path-tip-icon">💡</div>
+      <div class="path-tip-text">
+        <div class="path-tip-title">Совет дня</div>
+        <div class="path-tip-desc" id="path-tip-content">Ты на правильном пути! Уделяй 30 минут в день повторению материала — это лучше, чем зубрить всё перед экзаменом.</div>
+      </div>
+      <button class="path-tip-refresh" onclick="refreshPathTip()" title="Другой совет"><i class="fas fa-sync-alt"></i></button>
+    </div>
+
+    <!-- Путь-маршрут -->
+    <div class="path-journey" id="path-journey">
+      <!-- Рендерится через JS -->
+    </div>
+
+    <!-- Варианты развития -->
+    <div class="path-branches-section">
+      <div class="path-branches-title">
+        <i class="fas fa-code-branch"></i> Варианты развития после 11 класса
+      </div>
+      <div class="path-branches-grid" id="path-branches">
+        <!-- Рендерится через JS -->
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- ========================================
+     МОДАЛЬНЫЕ ОКНА
+     ======================================== -->
+
+<!-- Модаль запроса документа -->
+<div id="request-modal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>Запросить справку</h2>
+      <button class="modal-close">&times;</button>
+    </div>
+    <form id="request-form" class="modal-body">
+      <div class="form-group">
+        <label>Тип документа *</label>
+        <select id="doc-type-select" required>
+          <option value="study">Справка об обучении</option>
+          <option value="expulsion">Справка об отчислении</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Организация *</label>
+        <select required>
+          <option>МБОУ «Школа №1 г. Южно-Сахалинска»</option>
+          <option>МБОУ «Гимназия №3»</option>
+          <option>Лицей №2 г. Южно-Сахалинска</option>
+        </select>
+      </div>
+      <div style="display: flex; gap: 12px; margin-top: 24px;">
+        <button type="button" class="btn btn-outline" onclick="closeModal('request-modal')">Отмена</button>
+        <button type="submit" class="btn btn-primary" style="flex: 1;">Сформировать</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Модаль статуса обработки -->
+<div id="status-modal" class="modal">
+  <div class="modal-content" style="max-width: 500px;">
+    <div class="modal-header">
+      <h2>Формирование документа</h2>
+    </div>
+    <div class="modal-body">
+      <div style="text-align: center; margin-bottom: 24px;">
+        <div style="font-size: 48px; margin-bottom: 16px;"><i class="fas fa-file-check"></i></div>
+        <div style="font-size: 18px; font-weight: 600; margin-bottom: 8px;">Ваш документ формируется</div>
+        <div style="font-size: 14px; color: var(--text-secondary);">Это займет несколько секунд</div>
+      </div>
+      
+      <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 24px;">
+        <div style="text-align: center;">
+          <div style="font-size: 24px; margin-bottom: 8px;"><i class="fas fa-check-circle" style="color: #10B981;"></i></div>
+          <div style="font-size: 12px;">Запрос</div>
+        </div>
+        <div style="text-align: center;">
+          <div style="font-size: 24px; margin-bottom: 8px;"><i class="fas fa-circle-notch" style="color: #F59E0B; animation: spin 1s linear infinite;"></i></div>
+          <div style="font-size: 12px;">Данные</div>
+        </div>
+        <div style="text-align: center;">
+          <div style="font-size: 24px; margin-bottom: 8px;"><i class="fas fa-circle" style="color: #D1D5DB;"></i></div>
+          <div style="font-size: 12px;">Формирование</div>
+        </div>
+        <div style="text-align: center;">
+          <div style="font-size: 24px; margin-bottom: 8px;"><i class="fas fa-circle" style="color: #D1D5DB;"></i></div>
+          <div style="font-size: 12px;">Подпись</div>
+        </div>
+      </div>
+
+      <div style="background: var(--bg-secondary); padding: 12px; border-radius: var(--radius-sm); margin-bottom: 24px;">
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: 0%;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Модаль отправки документа -->
+<div id="send-modal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>Отправить документ</h2>
+      <button class="modal-close">&times;</button>
+    </div>
+    <form id="send-form" class="modal-body">
+      <div class="form-group">
+        <label>Выберите организацию для отправки *</label>
+        <select required>
+          <option>МБОУ «Школа №1 г. Южно-Сахалинска»</option>
+          <option>МБОУ «Гимназия №3»</option>
+          <option>Лицей №2 г. Южно-Сахалинска</option>
+          <option>Сахалинский государственный университет</option>
+        </select>
+      </div>
+      <div style="display: flex; gap: 12px; margin-top: 24px;">
+        <button type="button" class="btn btn-outline" onclick="closeModal('send-modal')">Отмена</button>
+        <button type="submit" class="btn btn-primary" style="flex: 1;">Отправить</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Модаль информации об организации -->
+<div id="org-modal" class="modal">
+  <div class="modal-content" style="max-width: 500px;">
+    <div class="modal-header">
+      <h2>Информация об организации</h2>
+      <button class="modal-close">&times;</button>
+    </div>
+    <div class="modal-body"></div>
+  </div>
+</div>
+
+<!-- Модаль задания -->
+<div id="task-modal" class="modal">
+  <div class="modal-content" style="max-width: 640px;">
+    <div class="modal-header">
+      <h2 id="task-modal-title">Задание</h2>
+      <button class="modal-close">&times;</button>
+    </div>
+    <div class="modal-body" id="task-modal-body"></div>
+  </div>
+</div>
+
+<style>
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+</style>
+
+<script src="js/app.js"></script>
+</body>
+</html>
